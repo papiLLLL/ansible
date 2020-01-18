@@ -1,0 +1,16 @@
+- name: download setup script for mariadb repository
+  get_url:
+    url: https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+    dest: "{{ playbook_dir }}/roles/mariadb/files/mariadb_repo_setup.sh"
+    checksum: sha256:9dc259867ece1dc05be63542f60a07704cb7f81e635cdc1beacd2f725043d250
+    mode: 0755
+
+- name: execute setup script
+  script: mariadb_repo_setup.sh
+
+- name: install mariadb
+  yum:
+    name:
+      - MariaDB-server
+      - MariaDB-client
+    state: latest

@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+  - name: Download setup.ius.io
+    get_url:
+      url: https://setup.ius.io/
+      dest: /home/devuser/ansible/setup_ius.sh
+      checksum: sha256:44d65088479427cb946402f4caa965ca27d1cf8f5ec9f881b6cf1dc01b235045
+      mode: 0755
+ 
+  - name: Execute setup for ius repository
+    script: /home/devuser/ansible/setup_ius.sh

@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  become: yes
+  #environment:
+  #  PATH: /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin
+  roles:
+    #- nginx
+    #- mariadb
+    #- php
+    #- wordpress
+    - git
