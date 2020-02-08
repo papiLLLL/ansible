@@ -1,0 +1,26 @@
+---
+- name: Enable umask 022 in "{{ ansible_user_dir }}/.profile"
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.profile"
+    regexp: "^#?umask 022"
+    line: "umask 022"
+
+- name: Check if there is /etc/wsl.conf
+  stat:
+    path: /etc/wsl.conf
+  register: result
+
+- name: Create /etc/wsl.conf
+  become: yes
+  file:
+    path: /etc/wsl.conf
+    state: touch
+  when: not result.stat.exists
+
+- name: Add metadata in /etc/wsl.conf
+  become: yes
+  blockinfile:
+    path: /etc/wsl.conf
+    block: |
+      [automount]
+      options = "metadata"

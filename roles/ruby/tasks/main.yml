@@ -1,0 +1,7 @@
+- name: Import ubuntu.yml
+  import_tasks: ubuntu.yml
+  when: ansible.distribution == "ubuntu"
+
+- name: Import centos.yml
+  import_tasks: centos.yml
+  when: ansible.distribution == "centos"

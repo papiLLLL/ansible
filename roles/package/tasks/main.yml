@@ -1,0 +1,19 @@
+---
+- name: Update package list
+  become: yes
+  apt:
+    update_cache: yes
+  changed_when: false
+
+- name: Upgrade all packages
+  become: yes
+  apt:
+    upgrade: dist
+
+- name: Install package for middle ware
+  become: yes
+  apt:
+    name:
+      - zlib1g-dev  # Ruby
+      - libsqlite3-dev  # Rails
+

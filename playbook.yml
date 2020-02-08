@@ -1,11 +1,11 @@
 ---
 - hosts: localhost
-  become: yes
-  #environment:
-  #  PATH: /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin
+  connection: local
   roles:
-    #- nginx
-    #- mariadb
-    #- php
-    #- wordpress
+    - package
     - git
+    - wsl
+    - os
+    - ruby
+    - nodejs
+

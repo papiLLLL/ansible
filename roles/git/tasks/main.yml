@@ -1,55 +1,7 @@
----
-- name: prepare set_fact for conditional branch
-  set_fact:
-    condition: result.rc != 0 and result.stdout != "git version {{ git_version }}"
+- name: Import ubuntu.yml
+  import_tasks: ubuntu.yml
+  when: ansible.distribution == "ubuntu"
 
-- name: check git version and existance
-  command: "git --version"
-  register: result
-  failed_when: false
-  changed_when: false
-
-- name: output checking result
-  debug:
-    var: result.stdout
-
-- name: install package for build
-  yum:
-    name:
-      - wget
-      - gcc
-      - openssl-devel
-      - curl-devel
-      - expat-devel
-      - perl
-      - cpan
-    state: latest
-  when: condition
-
-- name: download git {{ git_version }}
-  get_url:
-    url: "https://mirrors.edge.kernel.org/pub/software/scm/git/git-{{ git_version }}.tar.gz"
-    dest: "{{ playbook_dir }}/roles/git/files/git-{{ git_version }}.tar.gz"
-  when: condition
-
-- name: unarchive git file to {{ src_dir }}
-  unarchive:
-    src: "{{ playbook_dir }}/roles/git/files/git-{{ git_version }}.tar.gz"
-    dest: "{{ src_dir }}"
-  when: condition
-
-- name: build "all" target to {{ usr_local_dir }}
-  make:
-    chdir: "{{ src_dir }}/git-{{ git_version }}"
-    target: all
-    params:
-      prefix: "{{ usr_local_dir }}"
-  when: condition
-
-- name: run "install" target to {{ usr_local_dir }}
-  make:
-    chdir: "{{ src_dir }}/git-{{ git_version }}"
-    target: install
-    params:
-      prefix: "{{ usr_local_dir }}"
-  when: condition
+- name: Import centos.yml
+  import_tasks: centos.yml
+  when: ansible.distribution == "centos"

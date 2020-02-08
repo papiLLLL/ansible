@@ -1,0 +1,39 @@
+---
+- name: Prepare set_fact for conditional branch
+  set_fact:
+    condition: result.rc != 0 or result.stdout != "{{ nodejs_version }}"
+
+- name: Check if there is nodejs
+  shell: node -v | cut -c 2-
+  register: result
+  failed_when: false
+  changed_when: false
+
+- name: Install packages for nodejs latest
+  become: yes
+  apt:
+    name:
+      - nodejs
+      - npm
+  when: condition
+
+- name: Install n from npm
+  become: yes
+  npm:
+    name: n
+    global: yes
+  when: condition
+
+- name: Install nodejs for latest
+  become: yes
+  shell: n stable
+  when: condition
+
+- name: Delete old nodejs and npm
+  become: yes
+  apt:
+    state: absent
+    pkg:
+      - nodejs
+      - npm
+  when: condition

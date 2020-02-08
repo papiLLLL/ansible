@@ -1,0 +1,57 @@
+---
+- name: Prepare set_fact for exists_or_wrong_version branch
+  set_fact:
+    exists_or_wrong_version: result.rc != 0 or result.stdout != "{{ git_version }}"
+    exists: result.rc == 0 and result.stdout != "{{ git_version }}"
+
+- name: Check git version and existance
+  shell: 'git --version | sed -r "s/^git version\s+(.*)/\1/"'
+  register: result
+  failed_when: false
+  changed_when: false
+
+- name: Install package for build
+  apt:
+    name:
+      - dh-autoreconf
+      - libcurl4-gnutls-dev
+      - libexpat1-dev
+      - gettext
+      - libz-dev
+      - libssl-dev
+    state: present
+  when: exists_or_wrong_version
+
+- name: Download git {{ git_version }}
+  get_url:
+    url: "https://mirrors.edge.kernel.org/pub/software/scm/git/git-{{ git_version }}.tar.gz"
+    dest: "{{ playbook_dir }}/roles/git/files/git-{{ git_version }}.tar.gz"
+  when: exists_or_wrong_version
+
+- name: Unarchive git file to /usr/local/src
+  unarchive:
+    src: "{{ playbook_dir }}/roles/git/files/git-{{ git_version }}.tar.gz"
+    dest: "/usr/local/src"
+  when: exists_or_wrong_version
+
+- name: Build "all" target to /usr/local
+  make:
+    chdir: "/usr/local/src/git-{{ git_version }}"
+    target: all
+    params:
+      prefix: "/usr/local"
+  when: exists_or_wrong_version
+
+- name: Run "install" target to /usr/local
+  make:
+    chdir: "/usr/local/src/git-{{ git_version }}"
+    target: install
+    params:
+      prefix: "/usr/local"
+  when: exists_or_wrong_version
+
+- name: Delete if there is old version
+  apt:
+    name: git
+    state: absent
+  when: exists

@@ -1,0 +1,37 @@
+---
+- name: Check ruby version and existance
+  shell: ruby --version | sed -r "s/^ruby\s([0-9]+\.[0-9]+\.[0-9]+).*$/\1/"
+  register: result
+  failed_when: false
+  changed_when: false
+
+- name: Download rbenv
+  git:
+    repo: "https://github.com/rbenv/rbenv.git"
+    dest: "{{ ansible_user_dir }}/.rbenv"
+
+- name: Download ruby-build
+  git:
+    repo: "https://github.com/rbenv/ruby-build.git"
+    dest: "{{ ansible_user_dir }}/.rbenv/plugins/ruby-build"
+
+- name: Add path for .rbenv
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.bashrc"
+    regexp: 'export PATH="\$HOME/.rbenv/bin:\$PATH"'
+    line: 'export PATH="$HOME/.rbenv/bin:$PATH"'
+
+- name: Initial rbenv
+  lineinfile:
+    path: "{{ ansible_user_dir }}/.bashrc"
+    regexp: 'eval "\$\(rbenv init -\)"'
+    line: 'eval "$(rbenv init -)"'
+
+- name: Install ruby {{ ruby_version }}
+  shell: |
+    export PATH="$HOME/.rbenv/bin:$PATH" && \
+    eval "$(rbenv init -)" && \
+    rbenv install {{ ruby_version }} && \
+    rbenv global {{ ruby_version }}
+  when: result.rc != 0 or result.stdout != ruby_version
+  
