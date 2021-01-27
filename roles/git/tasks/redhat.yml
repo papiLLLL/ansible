@@ -17,13 +17,11 @@
 - name: Add git-completion loading 
   lineinfile:
     path: "{{ ansible_user_dir }}/.bashrc"
-    #regexp: 'source \$HOME/.git-completion.bash'
     line: "source $HOME/.git-completion.bash"
 
 - name: Load git-prompt
   lineinfile:
     path: "{{ ansible_user_dir }}/.bashrc"
-    #regexp: 'source \$HOME/.git-prompt.sh'
     line: "source $HOME/.git-prompt.sh"
 
 - name: Config git-prompt

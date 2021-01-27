@@ -9,12 +9,11 @@
   lineinfile:
     path: ~/.bashrc
     line: "alias vi='vim'"
-    insertafter: EOF
 
 - name: Download vim-atom-dark
   git:
     repo: "https://github.com/gosukiwi/vim-atom-dark.git"
-    dest: "{{ playbook_dir}}/roles/vim/files/vim-atom-dark"
+    dest: "{{ playbook_dir }}/roles/vim/files/vim-atom-dark"
 
 - name: Create directory for color scheme
   file:
