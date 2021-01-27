@@ -2,9 +2,9 @@
 - hosts: localhost
   connection: local
   roles:
-    - vim
+    #- vim
     #- package
-    #- git
+    - git
     #- wsl
     #- os
     #- ruby

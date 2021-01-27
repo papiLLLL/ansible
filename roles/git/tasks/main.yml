@@ -1,7 +1,3 @@
-- name: Import ubuntu.yml
-  import_tasks: ubuntu.yml
-  when: ansible.distribution == "ubuntu"
-
-- name: Import centos.yml
-  import_tasks: centos.yml
-  when: ansible.distribution == "centos"
+---
+- import_tasks: redhat.yml
+  when: ansible_facts["os_family"] | lower == "redhat"
