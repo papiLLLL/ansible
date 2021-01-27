@@ -1,0 +1,34 @@
+---
+- name: Install vim
+  become: yes
+  yum:
+    name: "vim"
+    state: present
+
+- name: Add alias for vim to ~/.bashrc
+  lineinfile:
+    path: ~/.bashrc
+    line: "alias vi='vim'"
+    insertafter: EOF
+
+- name: Download vim-atom-dark
+  git:
+    repo: "https://github.com/gosukiwi/vim-atom-dark.git"
+    dest: "{{ playbook_dir}}/roles/vim/files/vim-atom-dark"
+
+- name: Create directory for color scheme
+  file:
+    path: "{{ ansible_user_dir }}/.vim/colors"
+    state: directory
+
+- name: Copy color scheme
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_user_dir }}/.vim/colors/"
+  with_fileglob:
+    - "vim-atom-dark/colors/*.vim"
+
+- name: Copy "{{ ansible_user_dir }}/.vimrc"
+  copy:
+    src: .vimrc
+    dest: "{{ ansible_user_dir }}/.vimrc"

@@ -2,10 +2,11 @@
 - hosts: localhost
   connection: local
   roles:
-    - package
-    - git
-    - wsl
-    - os
-    - ruby
-    - nodejs
+    - vim
+    #- package
+    #- git
+    #- wsl
+    #- os
+    #- ruby
+    #- nodejs
 
