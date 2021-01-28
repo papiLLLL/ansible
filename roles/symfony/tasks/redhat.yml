@@ -1,0 +1,22 @@
+---
+- name: Check symfony installed
+  stat:
+    path: /usr/local/bin/symfony
+  register: symfony
+
+- name: Download symfony
+  get_url:
+    url: https://get.symfony.com/cli/installer
+    dest: /usr/local/src/symfony
+    mode: 0755
+
+- name: Install symfony
+  script: /usr/local/src/symfony
+  when: not symfony.stat.exists
+
+- name: Copy symfony to /usr/local/src
+  copy:
+    src: "{{ ansible_user_dir }}/.symfony/bin/symfony"
+    dest: /usr/local/bin/symfony
+    mode: 0755
+    remote_src: yes

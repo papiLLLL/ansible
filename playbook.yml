@@ -5,8 +5,9 @@
     #- vim
     #- package
     #- git
-    - php
-    - php-composer
+    #- php
+    #- php-composer
+    - symfony
     #- wsl
     #- os
     #- ruby
