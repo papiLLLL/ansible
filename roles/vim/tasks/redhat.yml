@@ -13,7 +13,7 @@
 - name: Download vim-atom-dark
   git:
     repo: "https://github.com/gosukiwi/vim-atom-dark.git"
-    dest: "{{ playbook_dir }}/roles/vim/files/vim-atom-dark"
+    dest: "/usr/local/src/vim-atom-dark"
 
 - name: Create directory for color scheme
   file:
@@ -24,8 +24,9 @@
   copy:
     src: "{{ item }}"
     dest: "{{ ansible_user_dir }}/.vim/colors/"
+    remote_src: yes
   with_fileglob:
-    - "vim-atom-dark/colors/*.vim"
+    - "/usr/local/src/vim-atom-dark/colors/*.vim"
 
 - name: Copy "{{ ansible_user_dir }}/.vimrc"
   copy:

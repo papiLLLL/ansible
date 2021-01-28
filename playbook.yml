@@ -2,12 +2,12 @@
 - hosts: localhost
   connection: local
   roles:
-    #- vim
+    - vim
     #- package
     #- git
     #- php
     #- php-composer
-    - symfony
+    #- symfony
     #- wsl
     #- os
     #- ruby
