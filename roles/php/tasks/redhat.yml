@@ -1,0 +1,10 @@
+---
+- name: Install remi repository
+  dnf:
+    name: "https://rpms.remirepo.net/enterprise/remi-release-8.rpm"
+    state: present
+
+- name: Install php{{ php_version }}
+  dnf:
+    name: "php{{ php_version }}"
+    state: present
