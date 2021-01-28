@@ -1,0 +1,14 @@
+---
+- name: Check composer installed
+  stat:
+    path: /usr/local/bin/composer
+  register: composer
+
+- name: Download composer-setup.php
+  get_url:
+    url: "https://getcomposer.org/installer"
+    dest: "/usr/local/src/composer-setup.php"
+
+- name: Install composer
+  command: php /usr/local/src/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+  when: not composer.stat.exists

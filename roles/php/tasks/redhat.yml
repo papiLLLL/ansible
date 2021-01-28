@@ -8,3 +8,9 @@
   dnf:
     name: "php{{ php_version }}"
     state: present
+
+- name: Change execution name php80 to php
+  alternatives:
+    name: php
+    path: /usr/bin/php80
+    link: /usr/bin/php

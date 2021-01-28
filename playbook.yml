@@ -6,6 +6,7 @@
     #- package
     #- git
     - php
+    - php-composer
     #- wsl
     #- os
     #- ruby
